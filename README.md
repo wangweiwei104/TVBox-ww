@@ -6,17 +6,17 @@
 <div align="center">更加注重自定义直播功能的app,完全保留原有点播功能！实际就是为了练手，以前没学过java,会一点点c,python,matlab，第一次用github,还不怎么会</div>
 <br>
 <p align="center">
-  <a href="https://github.com/wangweiwei104/TVBox/releases/latest">
-    <img src="https://img.shields.io/github/v/release/wangweiwei104/TVBox" />
+  <a href="https://github.com/wangweiwei104/TVBox-ww/releases/latest">
+    <img src="https://img.shields.io/github/v/release/wangweiwei104/TVBox-ww" />
   </a>
-  <a href="https://github.com/wangweiwei104/TVBox/releases/latest">
-    <img src="https://img.shields.io/github/downloads/wangweiwei104/TVBox/total" />
+  <a href="https://github.com/wangweiwei104/TVBox-ww/releases/latest">
+    <img src="https://img.shields.io/github/downloads/wangweiwei104/TVBox-ww/total" />
   </a>
-  <a href="https://github.com/wangweiwei104/TVBox/fork">
-    <img src="https://img.shields.io/github/forks/wangweiwei104/TVBox" />
+  <a href="https://github.com/wangweiwei104/TVBox-ww/fork">
+    <img src="https://img.shields.io/github/forks/wangweiwei104/TVBox-ww" />
   </a>
-  <a href="https://github.com/wangweiwei104/TVBox/star">
-    <img src="https://img.shields.io/github/stars/wangweiwei104/TVBox" />
+  <a href="https://github.com/wangweiwei104/TVBox-ww/star">
+    <img src="https://img.shields.io/github/stars/wangweiwei104/TVBox-ww" />
   </a>
 </p>
 
