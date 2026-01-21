@@ -1037,10 +1037,10 @@
     "logo": null
   }, {
     "tvid": "146",
-    "epgid": "卡酷动画",
-    "name": "卡酷动画,卡酷少儿",
+    "epgid": "卡酷少儿",
+    "name": "卡酷少儿,卡酷动画",
     "status": "1",
-    "note": "卡酷动画",
+    "note": "卡酷少儿",
     "logo": "http://epg.51zmt.top:8000/tb1/qt/kaku.png"
   }, {
     "tvid": "147",
