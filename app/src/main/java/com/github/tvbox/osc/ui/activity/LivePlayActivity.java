@@ -781,8 +781,11 @@ public class LivePlayActivity extends BaseActivity {
                 String[] epgInfo = EpgUtil.getEpgInfo(channel_Name.getChannelName());
                 if (StringUtils.isBlank(epgLogoURL)){
                 getTvLogo(channel_Name.getChannelName(), epgInfo == null ? null : epgInfo[0]);
-                } else {
+                } else if (epgLogoURL.contains("{name}.png")) {
                     String logo= epgLogoURL.replace("{name}", epgInfo == null ? channel_Name.getChannelName() : epgInfo[1]);
+                    getTvLogo(channel_Name.getChannelName(), logo);
+                } else {
+                    String logo= epgLogoURL + (epgInfo == null ? channel_Name.getChannelName() : epgInfo[1]) + ".png";
                     getTvLogo(channel_Name.getChannelName(), logo);
                 }
                 ArrayList arrayList = (ArrayList) hsEpg.get(savedEpgKey);
@@ -844,8 +847,11 @@ public class LivePlayActivity extends BaseActivity {
 //        getTvLogo(channelName, epgInfo == null ? null : epgInfo[0]);
         if (StringUtils.isBlank(epgLogoURL)){
             getTvLogo(channel_Name.getChannelName(), epgInfo == null ? null : epgInfo[0]);
-        } else {
+        } else if (epgLogoURL.contains("{name}.png")) {
             String logo= epgLogoURL.replace("{name}", epgInfo == null ? channel_Name.getChannelName() : epgInfo[1]);
+            getTvLogo(channel_Name.getChannelName(), logo);
+        } else {
+            String logo= epgLogoURL + (epgInfo == null ? channel_Name.getChannelName() : epgInfo[1]) + ".png";
             getTvLogo(channel_Name.getChannelName(), logo);
         }
         if (epgInfo != null && !epgInfo[1].isEmpty()) {
