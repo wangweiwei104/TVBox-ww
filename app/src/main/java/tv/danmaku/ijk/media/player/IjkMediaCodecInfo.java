@@ -91,6 +91,9 @@ public class IjkMediaCodecInfo {
         // ------ AMLogic -----
         // MiBox1, 1s, 2
         sKnownCodecList.put("OMX.amlogic.avc.decoder.awesome", RANK_TESTED);
+        // Redmi A55 pro 2025 4xA55+Mail-G57
+        sKnownCodecList.put("c2.amlogic.avc.decoder", RANK_TESTED);
+        sKnownCodecList.put("c2.amlogic.avc.decoder.secure", RANK_SECURE);
 
         // ------ Marvell ------
         // Lenovo A788t
@@ -147,7 +150,9 @@ public class IjkMediaCodecInfo {
 
         name = name.toLowerCase(Locale.US);
         int rank = RANK_NO_SENSE;
-        if (!name.startsWith("omx.")) {
+        if (name.startsWith("c2.amlogic.")){
+            rank = RANK_TESTED; //for redmi a55 pro 2025
+        } else if (!name.startsWith("omx.")) {
             rank = RANK_NON_STANDARD;
         } else if (name.startsWith("omx.pv")) {
             rank = RANK_SOFTWARE;
