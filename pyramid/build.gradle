@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 33
 
         python {
-            buildPython("D:/Programs/Python/Python38/python.exe")
+            buildPython("C:\\Programs\\Python\\Python38\\python.exe")
             pip {
                 install "lxml"
                 install "ujson"

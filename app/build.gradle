@@ -12,9 +12,9 @@ android {
 
     defaultConfig {
         applicationId 'com.github.tvbox.osc.tk'
-        targetSdkVersion 28
+        targetSdkVersion 33
         versionCode 1
-        versionName "1.0." +"20251127-1156"
+        versionName "1.0." +"20260207-1256"
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -31,6 +31,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            signingConfig signingConfigs.debug
 
         }
     }
