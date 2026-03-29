@@ -43,7 +43,7 @@
     {
       "tvid": "6",
       "epgid": "CCTV5+",
-      "name": "CCTV5+,CCTV5⁺体育赛事,CCTV5⁺,CCTV-5⁺,CCTV-5⁺体育赛事,CCTV-体育赛事,CCTV5+体育赛事,CCTV5+,CCTV-5+,CCTV-5+体育赛事",
+      "name": "CCTV5+,CCTV-5＋,CCTV5⁺体育赛事,CCTV5⁺,CCTV-5⁺,CCTV-5⁺体育赛事,CCTV-体育赛事,CCTV5+体育赛事,CCTV5+,CCTV-5+,CCTV-5+体育赛事",
       "status": "1",
       "note": "CCTV-5⁺体育赛事",
       "logo": "http://epg.51zmt.top:8000/tb1/CCTV/CCTV5+.png"
@@ -155,7 +155,7 @@
     {
       "tvid": "19",
       "epgid": "CCTV4K",
-      "name": "CCTV-4K超高清,CCTV4K,CCTV4K超高清,CCTV-4K超高清-25p,CCTV-4K超高清-50p,CCTV-4K-25p,CCTV-4K-50p",
+      "name": "CCTV-4K超高清,CCTV4K,CCTV4K超高清,CCTV-4K超高清-25P,CCTV-4K超高清-50P,CCTV-4K-25P,CCTV-4K-50P",
       "status": "1",
       "note": "CCTV4K",
       "logo": "http://epg.51zmt.top:8000/tb1/CCTV/CCTV4k.png"
@@ -795,7 +795,7 @@
     {
       "tvid": "60",
       "epgid": "中国教育1台",
-      "name": "教育1台",
+      "name": "教育1台,中国教育-1,CETV1,CETV-1",
       "status": "1",
       "note": "教育1台",
       "logo": "http://epg.51zmt.top:8000/tb1/qt/中国教育1台.png"
@@ -803,7 +803,7 @@
     {
       "tvid": "61",
       "epgid": "中国教育2台",
-      "name": "教育2台",
+      "name": "教育2台,中国教育-2,CETV2,CETV-2",
       "status": "1",
       "note": "教育2台",
       "logo": "http://epg.51zmt.top:8000/tb1/qt/中国教育2台.png"
@@ -811,7 +811,7 @@
     {
       "tvid": "62",
       "epgid": "中国教育3台",
-      "name": "教育3台",
+      "name": "教育3台,中国教育-3,CETV3,CETV-3",
       "status": "1",
       "note": "教育3台",
       "logo": "http://epg.51zmt.top:8000/tb1/qt/中国教育3台.png"
@@ -819,7 +819,7 @@
     {
       "tvid": "1062",
       "epgid": "中国教育4台",
-      "name": "教育4台",
+      "name": "教育4台,中国教育-4,CETV4,CETV-4",
       "status": "1",
       "note": "教育4台",
       "logo": "http://epg.51zmt.top:8000/tb1/qt/中国教育4台.png"
