@@ -37,6 +37,10 @@ public class IjkMediaCodecInfo {
         sKnownCodecList = new TreeMap<String, Integer>(
                 String.CASE_INSENSITIVE_ORDER);
 
+        // Pixel
+        sKnownCodecList.put("c2.exynos.h264.decoder", RANK_TESTED);
+        sKnownCodecList.put("c2.exynos.hevc.decoder", RANK_TESTED);
+        sKnownCodecList.put("c2.exynos.acc.decoder", RANK_TESTED);
         // ----- Nvidia -----
         // Tegra3
         // Nexus 7 (2012)
@@ -91,9 +95,6 @@ public class IjkMediaCodecInfo {
         // ------ AMLogic -----
         // MiBox1, 1s, 2
         sKnownCodecList.put("OMX.amlogic.avc.decoder.awesome", RANK_TESTED);
-        // Redmi A55 pro 2025 4xA55+Mail-G57
-        sKnownCodecList.put("c2.amlogic.avc.decoder", RANK_TESTED);
-        sKnownCodecList.put("c2.amlogic.avc.decoder.secure", RANK_SECURE);
 
         // ------ Marvell ------
         // Lenovo A788t
@@ -101,27 +102,27 @@ public class IjkMediaCodecInfo {
         sKnownCodecList.put("OMX.MARVELL.VIDEO.H264DECODER", RANK_SOFTWARE);
 
         // ----- TODO: need test -----
-        sKnownCodecList.remove("OMX.Action.Video.Decoder");
-        sKnownCodecList.remove("OMX.allwinner.video.decoder.avc");
-        sKnownCodecList.remove("OMX.BRCM.vc4.decoder.avc");
-        sKnownCodecList.remove("OMX.brcm.video.h264.hw.decoder");
-        sKnownCodecList.remove("OMX.brcm.video.h264.decoder");
-        sKnownCodecList.remove("OMX.cosmo.video.decoder.avc");
-        sKnownCodecList.remove("OMX.duos.h264.decoder");
-        sKnownCodecList.remove("OMX.hantro.81x0.video.decoder");
-        sKnownCodecList.remove("OMX.hantro.G1.video.decoder");
-        sKnownCodecList.remove("OMX.hisi.video.decoder");
-        sKnownCodecList.remove("OMX.LG.decoder.video.avc");
-        sKnownCodecList.remove("OMX.MS.AVC.Decoder");
-        sKnownCodecList.remove("OMX.RENESAS.VIDEO.DECODER.H264");
-        sKnownCodecList.remove("OMX.RTK.video.decoder");
-        sKnownCodecList.remove("OMX.sprd.h264.decoder");
-        sKnownCodecList.remove("OMX.ST.VFM.H264Dec");
-        sKnownCodecList.remove("OMX.vpu.video_decoder.avc");
-        sKnownCodecList.remove("OMX.WMT.decoder.avc");
+        sKnownCodecList.put("OMX.Action.Video.Decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.allwinner.video.decoder.avc", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.BRCM.vc4.decoder.avc", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.brcm.video.h264.hw.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.brcm.video.h264.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.cosmo.video.decoder.avc", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.duos.h264.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.hantro.81x0.video.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.hantro.G1.video.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.hisi.video.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.LG.decoder.video.avc", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.MS.AVC.Decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.RENESAS.VIDEO.DECODER.H264", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.RTK.video.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.sprd.h264.decoder", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.ST.VFM.H264Dec", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.vpu.video_decoder.avc", RANK_ACCEPTABLE);
+        sKnownCodecList.put("OMX.WMT.decoder.avc", RANK_ACCEPTABLE);
 
         // Really ?
-        sKnownCodecList.remove("OMX.bluestacks.hw.decoder");
+        sKnownCodecList.put("OMX.bluestacks.hw.decoder", RANK_TESTED);
 
         // ---------------
         // Useless codec
@@ -139,7 +140,7 @@ public class IjkMediaCodecInfo {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static IjkMediaCodecInfo setupCandidate(MediaCodecInfo codecInfo,
-            String mimeType) {
+                                                   String mimeType) {
         if (codecInfo == null
                 || Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
             return null;
@@ -150,13 +151,15 @@ public class IjkMediaCodecInfo {
 
         name = name.toLowerCase(Locale.US);
         int rank = RANK_NO_SENSE;
-        if (name.startsWith("c2.amlogic.")){
-            rank = RANK_TESTED; //for redmi a55 pro 2025
-        } else if (!name.startsWith("omx.")) {
+        if (!name.startsWith("omx.") && !name.startsWith("c2.")) {
             rank = RANK_NON_STANDARD;
         } else if (name.startsWith("omx.pv")) {
             rank = RANK_SOFTWARE;
         } else if (name.startsWith("omx.google.")) {
+            rank = RANK_SOFTWARE;
+        } else if (name.startsWith("omx.android.")){
+            rank = RANK_SOFTWARE;
+        } else if (name.startsWith("c2.android.")){
             rank = RANK_SOFTWARE;
         } else if (name.startsWith("omx.ffmpeg.")) {
             rank = RANK_SOFTWARE;
