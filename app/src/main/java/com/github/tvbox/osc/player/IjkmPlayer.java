@@ -67,16 +67,13 @@ public class IjkmPlayer extends IjkPlayer {
         try {
             if (path != null && !TextUtils.isEmpty(path)) {
                 if(path.startsWith("rtsp")){
-                    mMediaPlayer.setOption(1, "infbuf", 1);
+                    mMediaPlayer.setOption(1, "infbuf", 1); // 无限读
                     mMediaPlayer.setOption(1, "rtsp_transport", "tcp");
                     mMediaPlayer.setOption(1, "rtsp_flags", "prefer_tcp");
                     mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "buffer_size", 1316);
                     mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L);
-
                     //  关闭播放器缓冲，这个必须关闭，否则会出现播放一段时间后，一直卡住，控制台打印 FFP_MSG_BUFFERING_START
-                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0)
-
-
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0);
                 } else if (!path.contains(".m3u8") && (path.contains(".mp4") || path.contains(".mkv") || path.contains(".avi"))) {
                     if (Hawk.get(HawkConfig.IJK_CACHE_PLAY, false)) {
                         String cachePath = FileUtils.getExternalCachePath() + "/ijkcaches/";
@@ -93,6 +90,23 @@ public class IjkmPlayer extends IjkPlayer {
                         mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "cache_max_capacity", 60 * 1024 * 1024);
                         path = "ijkio:cache:ffio:" + path;
                     }
+                } else if (isMulticastToUnicastHttpStrict(path)){ //如果是组播转单播的链接，进行特殊优化，加快换台速度
+                    //控制播放器分析媒体流信息的时间长度（单位：微秒）
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 500000L);
+                    //控制播放器探测数据的大小（单位：字节）
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 32768L);
+                    // 关闭包缓冲，减少延迟
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0L);
+                    // 立即刷新数据包
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L);
+                    // 启用丢帧处理，保证流畅性
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 1L);
+                    // 跳过非参考帧的环路滤波，降低CPU占用
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48L);
+                    // 设置最大分析时长
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 100L);
+                    // 开启无限缓冲区模式（适合直播场景）
+                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", 1L);
                 }
             }
             setDataSourceHeader(headers);
@@ -110,6 +124,64 @@ public class IjkmPlayer extends IjkPlayer {
         super.setDataSource(path, headers);
     }
 
+    public static boolean isMulticastToUnicastHttpStrict(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return false;
+        }
+
+        // 第一步：基本格式检查
+        if (!url.matches("(?i)^https?://.*")) {
+            return false;
+        }
+
+        // 第二步：提取路径中的IP地址
+        Pattern ipPattern = Pattern.compile("/(rtp|udp)/(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})(?::\\d+)?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = ipPattern.matcher(url);
+
+        if (!matcher.find()) {
+            return false;
+        }
+
+        // 第三步：验证IP地址
+        String ip = matcher.group(2);
+        return isValidMulticastIP(ip);
+    }
+
+    /**
+     * 验证是否为合法的D类组播IP地址
+     */
+    private static boolean isValidMulticastIP(String ip) {
+        try {
+            String[] parts = ip.split("\\.");
+            if (parts.length != 4) {
+                return false;
+            }
+
+            int first = Integer.parseInt(parts[0]);
+//            int second = Integer.parseInt(parts[1]);
+//            int third = Integer.parseInt(parts[2]);
+//            int fourth = Integer.parseInt(parts[3]);
+
+            // D类地址范围: 224.0.0.0 - 239.255.255.255
+            // 第一个字节必须在224-239之间
+            if (first < 224 || first > 239) {
+                return false;
+            }
+
+            // 验证每个字节都在0-255范围内
+            for (int i = 0; i < 4; i++) {
+                int octet = Integer.parseInt(parts[i]);
+                if (octet < 0 || octet > 255) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     private String encodeSpaceChinese(String str) throws UnsupportedEncodingException {
         Pattern p = Pattern.compile("[\u4e00-\u9fa5 ]+");
         Matcher m = p.matcher(str);
