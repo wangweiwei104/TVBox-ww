@@ -41,6 +41,7 @@
 ```bash
   http://xx/../{name}.png
   ```
+- ✅ 后面陆续改了很多关于直播的功能，具体看release日志吧。。。。。。
 - ⭐️ 上面四条更新的图以后再补上吧
 - ✨ 代码修改自[takagen99/Box ](https://github.com/takagen99/Box) [20251127-1156](https://github.com/o0HalfLife0o/TVBoxOSC/releases/tag/20251127-1156)
 - ✨ 后面再学习一下怎么合并两个仓库的代码，才能保持实时更新
