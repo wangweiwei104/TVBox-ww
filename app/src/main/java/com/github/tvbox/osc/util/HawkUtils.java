@@ -102,6 +102,79 @@ public class HawkUtils {
         return getIJKCache() ? "开启" : "关闭";
     }
 
+    // 在 HawkUtils 类中添加以下方法
+
+    // 分析时长 - 索引获取与切换
+    public static int getIJKAnalyzeDuration() {
+        return Hawk.get(HawkConfig.IJK_ANALYZE_DURATION, 0); // 默认索引为0，即“默认”选项
+    }
+
+    public static void nextIJKAnalyzeDuration() {
+        int index = getIJKAnalyzeDuration();
+        App app = App.getInstance();
+        String[] array = app.getResources().getStringArray(R.array.media_content_IjkPlayer_analyzeduration);
+        index++;
+        index %= array.length;
+        Hawk.put(HawkConfig.IJK_ANALYZE_DURATION, index);
+    }
+
+    public static String getIJKAnalyzeDurationDesc() {
+        App app = App.getInstance();
+        String[] array = app.getResources().getStringArray(R.array.media_content_IjkPlayer_analyzeduration);
+        return array[getIJKAnalyzeDuration()];
+    }
+
+    // 分析时长 - 返回实际的微秒值，如果选中“默认”则返回-1
+    public static long getIJKAnalyzeDurationActualValue() {
+        int index = getIJKAnalyzeDuration();
+        if (index == 0) {
+            return -1; // 特殊值，表示“默认”，不应设置此选项
+        }
+        // 索引 1-8 对应：0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2
+        float[] values = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f};
+        return (long)(values[index - 1] * 1000000L); // 转换为微秒
+    }
+
+    // 探测大小 - 索引获取与切换
+    public static int getIJKProbeSize() {
+        return Hawk.get(HawkConfig.IJK_PROBE_SIZE, 0); // 默认索引为0，即“默认”选项
+    }
+
+    public static void nextIJKProbeSize() {
+        int index = getIJKProbeSize();
+        App app = App.getInstance();
+        String[] array = app.getResources().getStringArray(R.array.media_content_IjkPlayer_probesize);
+        index++;
+        index %= array.length;
+        Hawk.put(HawkConfig.IJK_PROBE_SIZE, index);
+    }
+
+    public static String getIJKProbeSizeDesc() {
+        App app = App.getInstance();
+        String[] array = app.getResources().getStringArray(R.array.media_content_IjkPlayer_probesize);
+        return array[getIJKProbeSize()];
+    }
+
+    // 探测大小 - 返回实际的字节值，如果选中“默认”则返回-1
+    public static long getIJKProbeSizeActualValue() {
+        int index = getIJKProbeSize();
+        if (index == 0) {
+            return -1; // 特殊值，表示“默认”，不应设置此选项
+        }
+        // 索引 1-8 对应：8KB, 16KB, 32KB, 64KB, 128KB, 256KB, 512KB, 1MB
+        long[] values = {
+                8L * 1024,      // 8KB
+                16L * 1024,     // 16KB
+                32L * 1024,     // 32KB
+                64L * 1024,     // 64KB
+                128L * 1024,    // 128KB
+                256L * 1024,    // 256KB
+                512L * 1024,    // 512KB
+                1024L * 1024    // 1MB
+        };
+        return values[index - 1];
+    }
+
     /**
      * 获取exo渲染器 自己存储的数据
      *

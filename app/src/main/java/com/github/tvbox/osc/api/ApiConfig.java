@@ -172,7 +172,7 @@ public class ApiConfig {
         } else {
             configUrl = apiUrl;
         }
-        // System.out.println("API URL :" + configUrl);
+        System.out.println("API URL :" + configUrl);
         String configKey = TempKey;
         OkGo.<String>get(configUrl)
                 .headers("User-Agent", userAgent)

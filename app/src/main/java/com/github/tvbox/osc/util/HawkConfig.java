@@ -42,6 +42,8 @@ public class HawkConfig {
     public static final String PIC_IN_PIC = "pic_in_pic";   // true = on, false = off
     public static final String VIDEO_PURIFY = "video_purify";
     public static final String IJK_CACHE_PLAY = "ijk_cache_play";
+    public static final String IJK_ANALYZE_DURATION = "ijk_analyze_duration";
+    public static final String IJK_PROBE_SIZE = "ijk_probe_size";
 
     public static final String EXO_RENDERER = "exo_renderer";
     public static final String EXO_RENDERER_MODE = "exo_renderer_mode";

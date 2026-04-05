@@ -8,6 +8,7 @@ import com.github.tvbox.osc.api.ApiConfig;
 import com.github.tvbox.osc.bean.IJKCode;
 import com.github.tvbox.osc.util.FileUtils;
 import com.github.tvbox.osc.util.HawkConfig;
+import com.github.tvbox.osc.util.HawkUtils;
 import com.github.tvbox.osc.util.MD5;
 import com.github.tvbox.osc.util.PlayerHelper;
 import com.orhanobut.hawk.Hawk;
@@ -91,10 +92,27 @@ public class IjkmPlayer extends IjkPlayer {
                         path = "ijkio:cache:ffio:" + path;
                     }
                 } else if (isMulticastToUnicastHttpStrict(path)){ //如果是组播转单播的链接，进行特殊优化，加快换台速度
-                    //控制播放器分析媒体流信息的时间长度（单位：微秒）
-                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 500000L);
+
+
+                    // 从用户设置获取分析时长（单位：微秒）。如果用户选择“默认”，返回-1。
+                    long analyzeDuration = HawkUtils.getIJKAnalyzeDurationActualValue();
+                    if (analyzeDuration > 0) {
+                        // 仅当用户未选择“默认”时，才设置此选项
+                        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", analyzeDuration);
+                    }
+                    // 注意：如果 analyzeDuration == -1，则跳过setOption，IJK将使用其内部默认值。
+
+                    // 从用户设置获取探测大小（单位：字节）。如果用户选择“默认”，返回-1。
+                    long probeSize = HawkUtils.getIJKProbeSizeActualValue();
+                    if (probeSize > 0) {
+                        // 仅当用户未选择“默认”时，才设置此选项
+                        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", probeSize);
+                    }
+                    // 注意：如果 probeSize == -1，则跳过setOption，IJK将使用其内部默认值（通常是1MB或5MB）。
+
+                    //mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1000000L);
                     //控制播放器探测数据的大小（单位：字节）
-                    mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 32768L);
+                    //mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 32768L);
                     // 关闭包缓冲，减少延迟
                     mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", 0L);
                     // 立即刷新数据包

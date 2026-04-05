@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.yanzhenjie.andserver'
 
 def static buildTime() {
-    return new Date().format("yyyyMMdd_HHmm", TimeZone.getTimeZone("GMT+08:00"))
+    return new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 android {
@@ -14,7 +14,7 @@ android {
         applicationId 'com.github.tvbox.osc.tk'
         targetSdkVersion 33
         versionCode 1
-        versionName "1.0." +"20260329-2237"
+        versionName "1.0_"+"20260227-1116_".concat(buildTime())
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -31,7 +31,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            signingConfig signingConfigs.debug
 
         }
     }

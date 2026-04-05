@@ -76,6 +76,12 @@ public class MediaSettingDialog extends BaseDialog {
                 case VodPlayerPreferred:
                     HawkUtils.nextVodPlayerPreferred();
                     break;
+                case IJAnalyzeduration:  // 新增
+                    HawkUtils.nextIJKAnalyzeDuration();
+                    break;
+                case IJKProbesize:  // 新增
+                    HawkUtils.nextIJKProbeSize();
+                    break;
             }
             contentAdapter.refreshNotifyItemChanged(i);
         });
@@ -131,7 +137,7 @@ public class MediaSettingDialog extends BaseDialog {
     }
 
     //右侧的数据展示
-    public static class MediaSettingContentAdapter extends BaseQuickAdapter<MediaSettingEntity, BaseViewHolder> {
+    public class MediaSettingContentAdapter extends BaseQuickAdapter<MediaSettingEntity, BaseViewHolder> {
         public MediaSettingContentAdapter() {
             super(R.layout.item_dialog_select2);
         }
@@ -150,13 +156,33 @@ public class MediaSettingDialog extends BaseDialog {
                     tvContent.setText(HawkUtils.getIJKCacheDesc());
                     break;
                 case ExoRenderer:
-                    tvContent.setText(HawkUtils.getExoRendererDesc());
+//                    tvContent.setText(HawkUtils.getExoRendererDesc());
+                    //修复中文显示 ww 2026-04-04 23:25:40
+                    int exoRendererIndex = HawkUtils.getExoRenderer();
+                    String[] exoRendererArray = getContext().getResources().getStringArray(R.array.media_content_ExoPlayer_renderer);
+                    tvContent.setText(exoRendererArray[exoRendererIndex]);
                     break;
                 case ExoRendererMode:
                     tvContent.setText(HawkUtils.getExoRendererModeDesc());
                     break;
                 case VodPlayerPreferred:
-                    tvContent.setText(HawkUtils.getVodPlayerPreferredDesc());
+//                    tvContent.setText(HawkUtils.getVodPlayerPreferredDesc());
+                    //修复中文显示 ww 2026-04-04 23:25:40
+                    int vodPlayPreIndex = HawkUtils.getVodPlayerPreferred();
+                    String[] vodPlayPreArray = getContext().getResources().getStringArray(R.array.media_content_General_VodPlayerPreferred);
+                    tvContent.setText(vodPlayPreArray[vodPlayPreIndex]);
+                    break;
+                case IJAnalyzeduration:  // 新增
+                    //修复中文显示 ww 2026-04-04 23:25:40
+                    int durationIndex = HawkUtils.getIJKAnalyzeDuration();
+                    String[] durationArray = getContext().getResources().getStringArray(R.array.media_content_IjkPlayer_analyzeduration);
+                    tvContent.setText(durationArray[durationIndex]);
+                    break;
+                case IJKProbesize:  // 新增
+                    //修复中文显示 ww 2026-04-04 23:25:40
+                    int probeSizeIndex = HawkUtils.getIJKProbeSize();
+                    String[] probeSizeArray = getContext().getResources().getStringArray(R.array.media_content_IjkPlayer_probesize);
+                    tvContent.setText(probeSizeArray[probeSizeIndex]);
                     break;
             }
         }
@@ -189,6 +215,7 @@ public class MediaSettingDialog extends BaseDialog {
 
     //数据枚举
     public enum MediaSettingEnum {
-        IjkMediaCodecMode, IjkCache, ExoRenderer, ExoRendererMode,VodPlayerPreferred
+        IjkMediaCodecMode, IjkCache, ExoRenderer, ExoRendererMode,VodPlayerPreferred,
+        IJAnalyzeduration, IJKProbesize  // 新增两个选项
     }
 }

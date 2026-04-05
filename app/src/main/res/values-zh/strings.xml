@@ -30,6 +30,7 @@
     <string name="det_expand">全屏</string>
     <string name="det_search">快搜</string>
     <string name="det_sort">倒序</string>
+    <string name="det_sort_normal">正序</string>
     <string name="det_push">推送</string>
     <string name="det_fav">收藏</string>
     <string name="det_fav_add">已添加收藏</string>
@@ -204,6 +205,32 @@
     <string-array name="media_content_IjkPlayer">
         <item>解码模式</item>
         <item>缓存</item>
+        <item>分析时长</item>
+        <item>探测大小</item>
+    </string-array>
+
+    <string-array name="media_content_IjkPlayer_analyzeduration">
+        <item>默认</item>
+        <item>0.25秒</item>
+        <item>0.5秒</item>
+        <item>0.75秒</item>
+        <item>1秒</item>
+        <item>1.25秒</item>
+        <item>1.5秒</item>
+        <item>1.75秒</item>
+        <item>2秒</item>
+    </string-array>
+
+    <string-array name="media_content_IjkPlayer_probesize">
+        <item>默认</item>
+        <item>8KB</item>
+        <item>16KB</item>
+        <item>32KB</item>
+        <item>64KB</item>
+        <item>128KB</item>
+        <item>256KB</item>
+        <item>512KB</item>
+        <item>1MB</item>
     </string-array>
 
     <string-array name="media_content_ExoPlayer">
