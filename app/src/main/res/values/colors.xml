@@ -75,6 +75,12 @@
     <color name="subtitle_text_color_8">#4C4C4C</color>
     <color name="subtitle_text_color_9">#333333</color>
 
+    <!-- About 链接颜色 - 浅蓝色 -->
+    <color name="color_00BFFF">#FF00BFFF</color>
+
+    <!-- About 分割线颜色 - 半透明白色 -->
+    <color name="color_FFFFFF_30">#4DFFFFFF</color>
+
 
     <!-- 定义颜色数组 -->
     <array name="subtitle_text_color">

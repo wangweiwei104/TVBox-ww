@@ -1,33 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/shape_dialog_bg_main"
-    android:orientation="vertical"
     android:padding="@dimen/vs_30">
 
-    <TextView
-        android:id="@+id/versionTextView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:gravity="start"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="@dimen/ts_24"
-        android:layout_marginBottom="@dimen/vs_20" />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="@dimen/vs_600"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="@dimen/ts_50"
-        android:lineSpacingMultiplier="0"
-        android:shadowColor="@color/color_000000_60"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="3"
-        android:text="本软件只提供聚合展示功能，所有资源来自网上, 软件不参与任何制作, 上传, 储存, 下载等内容. 软件仅供学习参考, 请于安装后24小时内删除。\n\n打包分发请保留出处\nhttps://github.com/CatVodTVOfficial/TVBoxOSC"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="@dimen/ts_24" />
+        <!-- App图标，居中显示 -->
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="@dimen/vs_80"
+            android:layout_height="@dimen/vs_80"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:src="@drawable/app_icon" />
 
-</LinearLayout>
+        <!-- 完整版本号，居中显示 -->
+        <TextView
+            android:id="@+id/fullVersionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_20" />
+
+        <!-- 版本号第一部分 -->
+        <TextView
+            android:id="@+id/versionPart1TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_5"
+            android:gravity="start"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_18" />
+
+        <!-- Takagen99版本 -->
+        <TextView
+            android:id="@+id/takagenVersionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_5"
+            android:gravity="start"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_18" />
+
+        <!-- 二开版本 -->
+        <TextView
+            android:id="@+id/forkVersionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:gravity="start"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_18" />
+
+        <!-- 分割线1 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:background="@color/color_FFFFFF_30" />
+
+        <!-- 本机解码器（可点击） -->
+        <TextView
+            android:id="@+id/decoderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:gravity="start"
+            android:text="本机解码器"
+            android:textColor="@color/color_00BFFF"
+            android:textSize="@dimen/ts_18"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 分割线2 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:background="@color/color_FFFFFF_30" />
+
+        <!-- 免责声明（可点击，点击后查看详细） -->
+        <TextView
+            android:id="@+id/disclaimerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:gravity="start"
+            android:text="免责声明"
+            android:textColor="@color/color_00BFFF"
+            android:textSize="@dimen/ts_18"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 分割线3 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:background="@color/color_FFFFFF_30" />
+
+        <!-- 检查更新（可点击） -->
+        <TextView
+            android:id="@+id/checkUpdateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:gravity="start"
+            android:text="检查更新"
+            android:textColor="@color/color_00BFFF"
+            android:textSize="@dimen/ts_18"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 分割线4 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:background="@color/color_FFFFFF_30" />
+
+        <!-- 代码仓库标题 -->
+        <TextView
+            android:id="@+id/repoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_10"
+            android:text="代码仓库"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_20"
+            android:textStyle="bold" />
+
+        <!-- 原仓库 -->
+        <TextView
+            android:id="@+id/originalRepoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_8"
+            android:gravity="start"
+            android:text="原仓库：https://github.com/CatVodTVOfficial/TVBoxOSC"
+            android:textColor="@color/color_00BFFF"
+            android:textSize="@dimen/ts_16"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Takagen99仓库 -->
+        <TextView
+            android:id="@+id/takagenRepoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_8"
+            android:gravity="start"
+            android:text="Takagen99仓库：https://github.com/takagen99/Box"
+            android:textColor="@color/color_00BFFF"
+            android:textSize="@dimen/ts_16"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- 二开仓库 -->
+        <TextView
+            android:id="@+id/forkRepoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_8"
+            android:gravity="start"
+            android:text="二开仓库：https://github.com/wangweiwei104/TVBox-ww"
+            android:textColor="@color/color_00BFFF"
+            android:textSize="@dimen/ts_16"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+</ScrollView>
