@@ -193,6 +193,34 @@
     <string name="sub_style">样式</string>
     <string name="sub_style_text">字幕</string>
 
+    // 关于页面
+    <string name="about_version_no">版本号</string>
+    <string name="about_takagen99_ver">Takagen99版本</string>
+    <string name="about_my_version">我的版本</string>
+    <string name="about_decoder">本机解码器</string>
+    <string name="about_updates">检查更新</string>
+    <string name="about_disclaimers">免责声明</string>
+    <string name="about_repository">代码仓库</string>
+
+    // Repository page
+    <string name="about_repo_original_repository">原仓库： https://github.com/CatVodTVOfficial/TVBoxOSC</string>
+    <string name="about_repo_takagen99">Takagen99仓库： https://github.com/takagen99/Box</string>
+    <string name="about_repo_my">我的仓库： https://github.com/wangweiwei104/TVBox-ww</string>
+    <string name="btn_cancel">取消</string>
+
+    // Decoder page
+    <string name="about_decoder_title">视频解码器信息</string>
+    <string name="about_save_decoding_info">保存解码信息</string>
+
+    // 免责声明
+    <string-array name="about_disclaimers_content">
+        <item>本软件只提供聚合展示功能，所有资源来自网上，软件不参与任何制作、上传、储存、下载等内容。</item>
+        <item>软件仅供学习参考，请于安装后24小时内删除。</item>
+        <item>本软件为开源项目，遵循相关开源协议。使用者应遵守当地法律法规，不得用于非法用途。</item>
+        <item>如因使用本软件产生的任何问题，开发者不承担任何责任。</item>
+    </string-array>
+    <string name="btn_agree">同意</string>
+
     <string-array name="media_title">
         <item>通用</item>
         <item>EXO</item>

@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp">
-
-    <TextView
-        android:id="@+id/decoderTitle"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="@dimen/vs_720"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:text="视频解码器"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:padding="@dimen/vs_30">
 
-    <TextView
-        android:id="@+id/decoderCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textColor="#666666"
-        android:textSize="16sp" />
+        <!-- 标题 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:text="@string/about_decoder_title"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_26"
+            android:textStyle="bold" />
 
-    <ListView
-        android:id="@+id/decoderList"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:divider="#E0E0E0"
-        android:dividerHeight="1dp" />
+        <!-- 解码器数量统计 -->
+        <TextView
+            android:id="@+id/tv_decoder_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_10"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_22" />
 
-    <!-- 保存按钮 -->
-    <Button
-        android:id="@+id/btnSaveDecoders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/button_dialog_vod"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="保存解码器信息"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        <!-- 列表区域，使用固定高度或weight控制 -->
+        <ListView
+            android:id="@+id/lv_decoder_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="#33FFFFFF"
+            android:dividerHeight="1dp" />
 
-</LinearLayout>
+        <!-- 操作按钮，风格与免责声明的“同意”按钮一致 -->
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/vs_20"
+            android:background="@drawable/button_dialog_main"
+            android:padding="@dimen/vs_10"
+            android:text="@string/about_save_decoding_info"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_22" />
+
+    </LinearLayout>
+</FrameLayout>

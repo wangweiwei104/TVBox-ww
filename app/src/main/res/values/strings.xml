@@ -193,6 +193,34 @@
     <string name="sub_style">Style</string>
     <string name="sub_style_text">ABC.</string>
 
+    // About page
+    <string name="about_version_no">Release Number</string>
+    <string name="about_takagen99_ver">Takagen99 Release</string>
+    <string name="about_my_version">My Release</string>
+    <string name="about_decoder">Decoder</string>
+    <string name="about_updates">Updates</string>
+    <string name="about_disclaimers">Disclaimers</string>
+    <string name="about_repository">Repository</string>
+
+    // Repository page
+    <string name="about_repo_original_repository">Original Repository: https://github.com/CatVodTVOfficial/TVBoxOSC</string>
+    <string name="about_repo_takagen99">Takagen99 Repository: https://github.com/takagen99/Box</string>
+    <string name="about_repo_my">Source Repository: https://github.com/wangweiwei104/TVBox-ww</string>
+    <string name="btn_cancel">Cancel</string>
+
+    // Decoder page
+    <string name="about_decoder_title">Video Decoder Info</string>
+    <string name="about_save_decoding_info">Save Decoding Info</string>
+
+    // Disclaimers page
+    <string-array name="about_disclaimers_content">
+        <item>This software only provides an aggregation display function. All resources are sourced from the internet, and the software does not participate in any production, uploading, storage, downloading, or other related activities.</item>
+        <item>This software is solely for learning and reference purposes. Please delete it within 24 hours after installation.</item>
+        <item>This software is an open-source project and follows relevant open-source agreements. Users should comply with local laws and regulations and must not use it for illegal purposes.</item>
+        <item>The developer bears no responsibility for any issues arising from the use of this software.</item>
+    </string-array>
+    <string name="btn_agree">I Agree</string>
+
     <string-array name="doh_name">
         <item>System</item>
         <item>Tencent</item>

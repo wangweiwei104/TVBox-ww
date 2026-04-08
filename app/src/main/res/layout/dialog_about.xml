@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/shape_dialog_bg_main"
-    android:padding="@dimen/vs_30">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/vs_480"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/vs_30"
+        android:paddingTop="@dimen/vs_20"
+        android:paddingRight="@dimen/vs_30"
+        android:paddingBottom="@dimen/vs_30">
 
-        <!-- App图标，居中显示 -->
+        <!-- 固定的图标区域 -->
         <ImageView
             android:id="@+id/appIcon"
             android:layout_width="@dimen/vs_80"
@@ -20,7 +23,7 @@
             android:layout_marginBottom="@dimen/vs_20"
             android:src="@drawable/app_icon" />
 
-        <!-- 完整版本号，居中显示 -->
+        <!-- 固定的完整版本号区域 -->
         <TextView
             android:id="@+id/fullVersionTextView"
             android:layout_width="wrap_content"
@@ -30,152 +33,293 @@
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/ts_20" />
 
-        <!-- 版本号第一部分 -->
-        <TextView
-            android:id="@+id/versionPart1TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_5"
-            android:gravity="start"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_18" />
-
-        <!-- Takagen99版本 -->
-        <TextView
-            android:id="@+id/takagenVersionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_5"
-            android:gravity="start"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_18" />
-
-        <!-- 二开版本 -->
-        <TextView
-            android:id="@+id/forkVersionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:gravity="start"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_18" />
-
-        <!-- 分割线1 -->
-        <View
+        <!-- 可滚动区域：从版本号条目开始到代码仓库 -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:background="@color/color_FFFFFF_30" />
-
-        <!-- 本机解码器（可点击） -->
-        <TextView
-            android:id="@+id/decoderTextView"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:gravity="start"
-            android:text="本机解码器"
-            android:textColor="@color/color_00BFFF"
-            android:textSize="@dimen/ts_18"
-            android:clickable="true"
-            android:focusable="true" />
+            android:fillViewport="true">
 
-        <!-- 分割线2 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:background="@color/color_FFFFFF_30" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <!-- 免责声明（可点击，点击后查看详细） -->
-        <TextView
-            android:id="@+id/disclaimerTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:gravity="start"
-            android:text="免责声明"
-            android:textColor="@color/color_00BFFF"
-            android:textSize="@dimen/ts_18"
-            android:clickable="true"
-            android:focusable="true" />
+                <!-- 版本信息条目1 -->
+                <LinearLayout
+                    android:id="@+id/llVersionPart1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_10"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
 
-        <!-- 分割线3 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:background="@color/color_FFFFFF_30" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_version_no"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
 
-        <!-- 检查更新（可点击） -->
-        <TextView
-            android:id="@+id/checkUpdateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:gravity="start"
-            android:text="检查更新"
-            android:textColor="@color/color_00BFFF"
-            android:textSize="@dimen/ts_18"
-            android:clickable="true"
-            android:focusable="true" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
-        <!-- 分割线4 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/vs_20"
-            android:background="@color/color_FFFFFF_30" />
+                    <TextView
+                        android:id="@+id/versionPart1TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
 
-        <!-- 代码仓库标题 -->
-        <TextView
-            android:id="@+id/repoTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_10"
-            android:text="代码仓库"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/ts_20"
-            android:textStyle="bold" />
+                <!-- 版本信息条目2 (Takagen99版本) -->
+                <LinearLayout
+                    android:id="@+id/llTakagenVersion"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_10"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
 
-        <!-- 原仓库 -->
-        <TextView
-            android:id="@+id/originalRepoTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_8"
-            android:gravity="start"
-            android:text="原仓库：https://github.com/CatVodTVOfficial/TVBoxOSC"
-            android:textColor="@color/color_00BFFF"
-            android:textSize="@dimen/ts_16"
-            android:clickable="true"
-            android:focusable="true" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_takagen99_ver"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
 
-        <!-- Takagen99仓库 -->
-        <TextView
-            android:id="@+id/takagenRepoTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_8"
-            android:gravity="start"
-            android:text="Takagen99仓库：https://github.com/takagen99/Box"
-            android:textColor="@color/color_00BFFF"
-            android:textSize="@dimen/ts_16"
-            android:clickable="true"
-            android:focusable="true" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
-        <!-- 二开仓库 -->
-        <TextView
-            android:id="@+id/forkRepoTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/vs_8"
-            android:gravity="start"
-            android:text="二开仓库：https://github.com/wangweiwei104/TVBox-ww"
-            android:textColor="@color/color_00BFFF"
-            android:textSize="@dimen/ts_16"
-            android:clickable="true"
-            android:focusable="true" />
+                    <TextView
+                        android:id="@+id/takagenVersionTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
+
+                <!-- 版本信息条目3 (二开版本) -->
+                <LinearLayout
+                    android:id="@+id/llMyVersion"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_10"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_my_version"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/myVersionTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
+
+                <!-- 可点击项：本机解码器 -->
+                <LinearLayout
+                    android:id="@+id/llDecoder"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_20"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_decoder"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/vs_10"
+                        android:layout_marginLeft="@dimen/vs_10"
+                        android:text=">"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
+
+                <!-- 可点击项：免责声明 -->
+                <LinearLayout
+                    android:id="@+id/llDisclaimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_10"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_disclaimers"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/vs_10"
+                        android:layout_marginLeft="@dimen/vs_10"
+                        android:text=">"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
+
+                <!-- 可点击项：检查更新 -->
+                <LinearLayout
+                    android:id="@+id/llCheckUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_10"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_updates"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/vs_10"
+                        android:layout_marginLeft="@dimen/vs_10"
+                        android:text=">"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
+
+                <!-- 可点击项：代码仓库（点击进入二级页面） -->
+                <LinearLayout
+                    android:id="@+id/llRepoLinks"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vs_50"
+                    android:layout_marginStart="@dimen/vs_5"
+                    android:layout_marginLeft="@dimen/vs_5"
+                    android:layout_marginTop="@dimen/vs_10"
+                    android:layout_marginEnd="@dimen/vs_5"
+                    android:layout_marginRight="@dimen/vs_5"
+                    android:background="@drawable/button_dialog_main"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/vs_20"
+                    android:paddingRight="@dimen/vs_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_repository"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/vs_10"
+                        android:layout_marginLeft="@dimen/vs_10"
+                        android:text=">"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/ts_24" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
-</ScrollView>
+</FrameLayout>
