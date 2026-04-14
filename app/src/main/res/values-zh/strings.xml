@@ -211,6 +211,7 @@
     // Decoder page
     <string name="about_decoder_title">视频解码器信息</string>
     <string name="about_save_decoding_info">保存解码信息</string>
+    <string name="about_save">保存</string>
 
     // 免责声明
     <string-array name="about_disclaimers_content">

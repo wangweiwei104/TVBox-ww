@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tvDecoderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/ts_22"
+        android:textColor="@color/color_FFFFFF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="2dp">
+
+        <!-- 媒体类型：视频/音频 | 最大码率-->
+        <TextView
+            android:id="@+id/tvMediaType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/ts_20"
+            android:textColor="#CCFFFFFF" />
+
+        <!-- 解码方式：硬解码/软解码/未知 -->
+        <TextView
+            android:id="@+id/tvDecodeType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/ts_20"
+            android:textColor="#CCFFFFFF"
+            android:layout_marginLeft="8dp" />
+
+    </LinearLayout>
+
+<!--    &lt;!&ndash; 最大码率 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/tvMaxBitrate"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="12sp"-->
+<!--        android:textColor="#CCFFFFFF"-->
+<!--        android:layout_marginTop="2dp" />-->
+
+    <!-- 支持的格式 -->
+    <TextView
+        android:id="@+id/tvSupportedTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/ts_20"
+        android:textColor="#99FFFFFF"
+        android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+</LinearLayout>

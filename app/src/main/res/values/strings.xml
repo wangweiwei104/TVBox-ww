@@ -211,6 +211,8 @@
     // Decoder page
     <string name="about_decoder_title">Video Decoder Info</string>
     <string name="about_save_decoding_info">Save Decoding Info</string>
+    <string name="about_save">Save</string>
+
 
     // Disclaimers page
     <string-array name="about_disclaimers_content">

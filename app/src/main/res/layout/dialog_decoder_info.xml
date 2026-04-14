@@ -30,13 +30,14 @@
             android:textSize="@dimen/ts_22" />
 
         <!-- 列表区域，使用固定高度或weight控制 -->
+        <!-- 去掉默认橘黄选中色,更改为与主题统一 -->
         <ListView
             android:id="@+id/lv_decoder_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:divider="#33FFFFFF"
-            android:dividerHeight="1dp" />
+            android:listSelector="@drawable/button_dialog_vod"
+        />
 
         <!-- 操作按钮，风格与免责声明的“同意”按钮一致 -->
         <Button

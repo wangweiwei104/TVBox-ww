@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="@dimen/vs_720"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shape_dialog_bg_main"
+        android:padding="@dimen/vs_20">
+
+        <!-- 标题 -->
+        <TextView
+            android:id="@+id/tvDecoderName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_24"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <!-- 详细信息区域，使用ScrollView确保可以滚动 -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tvDetailInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_18"
+                android:lineSpacingExtra="2dp" />
+
+        </ScrollView>
+
+        <!-- 操作按钮 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/vs_20"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnSaveDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_dialog_main"
+                android:padding="@dimen/vs_10"
+                android:text="@string/about_save"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+            <Button
+                android:id="@+id/btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/vs_20"
+                android:background="@drawable/button_dialog_main"
+                android:padding="@dimen/vs_10"
+                android:text="@string/btn_cancel"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
