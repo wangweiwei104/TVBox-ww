@@ -14,6 +14,7 @@ android {
         applicationId 'com.github.tvbox.osc.tk'
         targetSdkVersion 33
         versionCode 1
+//        versionName "1.0_"+"20260227-1116_20260410-1122"
         versionName "1.0_"+"20260227-1116_".concat(buildTime())
         multiDexEnabled true
         //设置room的Schema的位置

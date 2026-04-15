@@ -139,17 +139,19 @@ public class AboutDialog extends BaseDialog {
         Toast.makeText(getContext(), "正在检查更新...", Toast.LENGTH_SHORT).show();
 
         // 在后台线程中检查更新
-        new AsyncTask<Void, Void, UpdateInfo>() {
+        new AsyncTask<Void, Void, UpdateDialog.UpdateInfo>() {
             @Override
-            protected UpdateInfo doInBackground(Void... voids) {
+            protected UpdateDialog.UpdateInfo doInBackground(Void... voids) {
                 return fetchLatestReleaseInfo();
             }
 
             @Override
-            protected void onPostExecute(UpdateInfo updateInfo) {
+            protected void onPostExecute(UpdateDialog.UpdateInfo updateInfo) {
                 if (updateInfo != null && updateInfo.isValid()) {
+                    // 有更新信息，检查版本是否需要更新
                     showUpdateDialog(updateInfo);
                 } else {
+                    // 检查失败
                     Toast.makeText(getContext(), "检查更新失败，请稍后重试", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -159,7 +161,7 @@ public class AboutDialog extends BaseDialog {
     /**
      * 获取最新发布信息
      */
-    private UpdateInfo fetchLatestReleaseInfo() {
+    private UpdateDialog.UpdateInfo fetchLatestReleaseInfo() {
         try {
             // GitHub API URL
             String apiUrl = "https://api.github.com/repos/wangweiwei104/TVBox-ww/releases/latest";
@@ -205,7 +207,7 @@ public class AboutDialog extends BaseDialog {
                     downloadUrl = jsonResponse.getString("zipball_url");
                 }
 
-                return new UpdateInfo(latestVersion, releaseName, releaseDate, body, downloadUrl);
+                return new UpdateDialog.UpdateInfo(latestVersion, releaseName, releaseDate, body, downloadUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,136 +216,34 @@ public class AboutDialog extends BaseDialog {
     }
 
     /**
-     * 显示更新对话框
+     * 显示更新对话框 - 只有需要更新时才显示
      */
-    private void showUpdateDialog(UpdateInfo updateInfo) {
+    private void showUpdateDialog(UpdateDialog.UpdateInfo updateInfo) {
         String currentVersion = BuildConfig.VERSION_NAME;
         String latestVersion = updateInfo.latestVersion;
 
         // 对比版本号
-        int comparison = compareVersions(currentVersion, latestVersion);
+        int comparison = UpdateDialog.compareVersions(currentVersion, latestVersion);
 
         if (comparison < 0) {
-            // 有新版本可用
-            String message = String.format(
-                    "当前版本: v%s\n" +
-                            "最新版本: v%s\n\n" +
-                            "更新内容:\n%s\n\n" +
-                            "发布日期: %s",
-                    currentVersion, latestVersion,
-                    updateInfo.body.length() > 0 ? updateInfo.body : "无更新说明",
-                    formatDate(updateInfo.releaseDate)
-            );
+            // 有新版本可用 -> 显示更新对话框
+            UpdateDialog updateDialog = new UpdateDialog(getContext(), updateInfo);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                    .setTitle("发现新版本")
-                    .setMessage(message)
-                    .setPositiveButton("立即下载", (dialog, which) -> {
-                        if (updateInfo.downloadUrl != null) {
-                            openUrlInBrowser(updateInfo.downloadUrl);
-                        } else {
-                            openUrlInBrowser("https://github.com/wangweiwei104/TVBox-ww/releases/latest");
-                        }
-                    })
-                    .setNegativeButton("取消", null);
+            // 设置更新监听器
+            updateDialog.setOnUpdateListener(new UpdateDialog.OnUpdateListener() {
+                @Override
+                public void onUpdateConfirmed(UpdateDialog.UpdateInfo updateInfo) {
+                    Toast.makeText(getContext(), "开始下载更新，下载完成后将自动安装", Toast.LENGTH_LONG).show();
+                }
+            });
 
-            // 如果不想更新，可以稍后提醒
-            builder.setNeutralButton("稍后提醒", null);
-
-            builder.show();
+            updateDialog.show();
         } else if (comparison == 0) {
+            // 当前已是最新版本 -> 只显示Toast，不弹对话框
             Toast.makeText(getContext(), "当前已是最新版本", Toast.LENGTH_SHORT).show();
         } else {
-            // 当前版本比最新版本还新（可能是开发版）
+            // 当前版本比最新版本还新（可能是开发版）-> 只显示Toast，不弹对话框
             Toast.makeText(getContext(), "当前为开发版本", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * 比较版本号
-     * 版本号格式: 1.0_20260227-1116_20260404-2323
-     * 比较规则: 按"_"分割，比较每一部分
-     */
-    private int compareVersions(String version1, String version2) {
-        try {
-            String[] parts1 = version1.split("_");
-            String[] parts2 = version2.split("_");
-
-            // 比较每部分
-            for (int i = 0; i < Math.min(parts1.length, parts2.length); i++) {
-                int result = comparePart(parts1[i], parts2[i]);
-                if (result != 0) {
-                    return result;
-                }
-            }
-
-            // 如果前几部分相同，长度长的版本更新
-            return Integer.compare(parts1.length, parts2.length);
-        } catch (Exception e) {
-            // 如果解析失败，使用字符串比较
-            return version1.compareTo(version2);
-        }
-    }
-
-    /**
-     * 比较版本号的一部分
-     */
-    private int comparePart(String part1, String part2) {
-        // 尝试按数字比较
-        if (part1.matches("\\d+") && part2.matches("\\d+")) {
-            int num1 = Integer.parseInt(part1);
-            int num2 = Integer.parseInt(part2);
-            return Integer.compare(num1, num2);
-        }
-
-        // 尝试按日期格式比较 (如 20260227-1116)
-        if (part1.matches("\\d{8}-\\d{4}") && part2.matches("\\d{8}-\\d{4}")) {
-            return part1.compareTo(part2);
-        }
-
-        // 其他情况使用字符串比较
-        return part1.compareTo(part2);
-    }
-
-    /**
-     * 格式化日期
-     */
-    private String formatDate(String isoDate) {
-        try {
-            if (isoDate == null || isoDate.isEmpty()) {
-                return "未知";
-            }
-
-            // ISO 8601 格式: 2026-04-05T07:33:03Z
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date date = inputFormat.parse(isoDate);
-            return outputFormat.format(date);
-        } catch (Exception e) {
-            return isoDate;
-        }
-    }
-
-    /**
-     * 更新信息类
-     */
-    private static class UpdateInfo {
-        String latestVersion;
-        String releaseName;
-        String releaseDate;
-        String body;
-        String downloadUrl;
-
-        UpdateInfo(String latestVersion, String releaseName, String releaseDate, String body, String downloadUrl) {
-            this.latestVersion = latestVersion;
-            this.releaseName = releaseName;
-            this.releaseDate = releaseDate;
-            this.body = body;
-            this.downloadUrl = downloadUrl;
-        }
-
-        boolean isValid() {
-            return latestVersion != null && !latestVersion.isEmpty();
         }
     }
 
@@ -390,6 +290,8 @@ public class AboutDialog extends BaseDialog {
         }
     }
 }
+
+
 
 
 

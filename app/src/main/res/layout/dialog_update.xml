@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="@dimen/vs_720"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shape_dialog_bg_subdialog"
+        android:padding="@dimen/vs_20">
+
+        <!-- 标题：发现新版本 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/vs_20"
+            android:text="发现新版本"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/ts_24"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <!-- 详细信息区域，使用ScrollView确保可以滚动 -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 当前版本 -->
+                <TextView
+                    android:id="@+id/tvCurrentVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vs_8"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_18" />
+
+                <!-- 最新版本 -->
+                <TextView
+                    android:id="@+id/tvLatestVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vs_8"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_18" />
+
+                <!-- 分隔线 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/vs_12"
+                    android:background="@color/color_FFFFFF" />
+
+                <!-- 更新内容标题 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vs_8"
+                    android:text="更新内容："
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_20"
+                    android:textStyle="bold" />
+
+                <!-- 更新内容正文 -->
+                <TextView
+                    android:id="@+id/tvUpdateBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vs_12"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_18"
+                    android:lineSpacingExtra="4dp" />
+
+                <!-- 发布日期 -->
+                <TextView
+                    android:id="@+id/tvReleaseDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/ts_16" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- 操作按钮：取消 和 立即更新 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/vs_20"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_dialog_main"
+                android:padding="@dimen/vs_10"
+                android:text="取消"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/vs_20"
+                android:background="@drawable/button_dialog_main"
+                android:padding="@dimen/vs_10"
+                android:text="立即更新"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/ts_20" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

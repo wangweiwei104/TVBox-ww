@@ -223,6 +223,19 @@
     </string-array>
     <string name="btn_agree">I Agree</string>
 
+    <!-- Update apk -->
+    <string name="update_downloading">Downloading...</string>
+    <string name="update_manual_install">Manual Install</string>
+    <string name="update_checking">Checking for updates...</string>
+    <string name="update_latest">Latest version already installed</string>
+    <string name="update_development">Development version</string>
+    <string name="update_failed">Update check failed, please try again later</string>
+    <string name="update_download_start">Starting to download new version, it will install automatically after completion</string>
+    <string name="update_installing">Installing new version...</string>
+    <string name="update_install_failed">Installation failed: %s</string>
+    <string name="update_no_installer">No installer found, please install manually</string>
+    <string name="update_no_file_manager">No file manager found</string>
+
     <string-array name="doh_name">
         <item>System</item>
         <item>Tencent</item>
