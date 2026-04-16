@@ -2,9 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.yanzhenjie.andserver'
-
+import java.security.MessageDigest
 def static buildTime() {
     return new Date().format("yyyyMMdd-HHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
+def calculateMD5(file) {
+    def digest = MessageDigest.getInstance("MD5")
+    file.eachByte 4096, { bytes, size ->
+        digest.update(bytes, 0, size)
+    }
+    return digest.digest().encodeHex() as String
 }
 
 android {
@@ -14,8 +22,8 @@ android {
         applicationId 'com.github.tvbox.osc.tk'
         targetSdkVersion 33
         versionCode 1
-        versionName "1.0_"+"20260227-1116_20260410-1122"
-//        versionName "1.0_"+"20260227-1116_".concat(buildTime())
+//        versionName "1.0_"+"20260227-1116_20260410-1122"
+        versionName "1.0_"+"20260227-1116_".concat(buildTime())
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
@@ -76,9 +84,41 @@ android {
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
             def flavorNames = variant.productFlavors.collect { it.name == "normal" ? "java" : it.name }.join('-')
-            // 构建自定义文件名
             def fileName = "TVBox_${variant.buildType.name}-${flavorNames}.apk"
             outputFileName = fileName
+
+            // 添加任务来生成 JSON 和 MD5 文件
+            variant.assembleProvider.get().doLast {
+                def apkFile = output.outputFile
+                if (apkFile != null && apkFile.exists()) {
+                    def md5 = calculateMD5(apkFile)
+                    def parentDir = apkFile.parent
+
+                    // 生成 JSON 文件
+                    def jsonContent = groovy.json.JsonOutput.toJson([
+                            fileName: fileName,
+                            versionCode: variant.versionCode,
+                            versionName: variant.versionName,
+                            md5: md5,
+                            buildType: variant.buildType.name,
+                            flavor: flavorNames,
+                            buildTime: new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("GMT+08:00"))
+                    ])
+
+                    def jsonFile = new File(parentDir, "${apkFile.name}.json")
+                    jsonFile.write(groovy.json.JsonOutput.prettyPrint(jsonContent))
+
+                    // 生成 MD5 文件
+                    def md5File = new File(parentDir, "${apkFile.name}.md5")
+                    md5File.write(md5)
+
+                    println "✅ Generated: ${apkFile.name}"
+                    println "  ├── MD5: ${md5}"
+                    println "  ├── Version: ${variant.versionName}"
+                    println "  ├── JSON: ${jsonFile.name}"
+                    println "  └── MD5 File: ${md5File.name}"
+                }
+            }
         }
     }
 

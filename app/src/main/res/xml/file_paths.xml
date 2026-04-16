@@ -10,11 +10,6 @@
         name="vod_external_cache_path"
         path="." />
 
-    <!-- 标准下载目录（用于自动安装） -->
-    <external-path
-        name="external_downloads"
-        path="Download/" />
-
     <!-- /storage/emulated/0/Download/${applicationId}/.beta/apk-->
     <external-path
         name="beta_external_path"

@@ -1,3 +1,4 @@
+// AboutDialog.java (改进版)
 package com.github.tvbox.osc.ui.dialog;
 
 
@@ -228,14 +229,6 @@ public class AboutDialog extends BaseDialog {
         if (comparison < 0) {
             // 有新版本可用 -> 显示更新对话框
             UpdateDialog updateDialog = new UpdateDialog(getContext(), updateInfo);
-
-            // 设置更新监听器
-            updateDialog.setOnUpdateListener(new UpdateDialog.OnUpdateListener() {
-                @Override
-                public void onUpdateConfirmed(UpdateDialog.UpdateInfo updateInfo) {
-                    Toast.makeText(getContext(), "开始下载更新，下载完成后将自动安装", Toast.LENGTH_LONG).show();
-                }
-            });
 
             updateDialog.show();
         } else if (comparison == 0) {
