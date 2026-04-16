@@ -234,6 +234,7 @@
     <string name="update_install_failed">安装失败: %s</string>
     <string name="update_no_installer">未找到安装程序，请手动安装</string>
     <string name="update_no_file_manager">未找到文件管理器</string>
+    <string name="update_proxy_downloading">通过代理下载中…</string>
 
     <string-array name="media_title">
         <item>通用</item>

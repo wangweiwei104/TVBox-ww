@@ -235,6 +235,7 @@
     <string name="update_install_failed">Installation failed: %s</string>
     <string name="update_no_installer">No installer found, please install manually</string>
     <string name="update_no_file_manager">No file manager found</string>
+    <string name="update_proxy_downloading">Downloading via proxy...</string>
 
     <string-array name="doh_name">
         <item>System</item>

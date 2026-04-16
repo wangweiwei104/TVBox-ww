@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,8 @@ import com.hjq.permissions.XXPermissions;
 import com.hjq.permissions.OnPermissionCallback;
 
 import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +41,9 @@ public class UpdateDialog extends BaseDialog {
     private long downloadId = -1;
     private String downloadFileName;
     private BroadcastReceiver downloadCompleteReceiver;
+
+    // 新增：GitHub代理前缀常量
+    private static final String GITHUB_PROXY_PREFIX = "https://gh-proxy.com/";
 
     // 更新信息类
     public static class UpdateInfo {
@@ -207,8 +213,9 @@ public class UpdateDialog extends BaseDialog {
     /**
      * 启动应用内下载
      */
-    private void startDownload(String downloadUrl) {
-        if (downloadUrl == null || downloadUrl.isEmpty()) {
+    private void startDownload(String originalDownloadUrl) {
+        // 参数名改为 originalDownloadUrl 以更清晰
+        if (originalDownloadUrl == null || originalDownloadUrl.isEmpty()) {
             Toast.makeText(getContext(), "下载链接无效", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -218,9 +225,27 @@ public class UpdateDialog extends BaseDialog {
             return;
         }
 
+        // --- 新增：根据网络状况处理下载链接 ---
+        String finalDownloadUrl = originalDownloadUrl;
+        String networkStatus = "";
+
+        // 判断是否能访问外部网络（以Google为例）
+        boolean accessible = canAccessGoogle();
+        if (!accessible) {
+            // 若不能访问，则在原始链接前拼接代理前缀
+            finalDownloadUrl = GITHUB_PROXY_PREFIX + originalDownloadUrl;
+            networkStatus = "（通过代理）";
+            Toast.makeText(getContext(), "网络受限，已启用代理加速下载", Toast.LENGTH_LONG).show();
+        } else {
+            networkStatus = "（直连）";
+            Toast.makeText(getContext(), "网络通畅，使用原始链接下载", Toast.LENGTH_LONG).show();
+        }
+        // --- 链接处理结束 ---
+
         try {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl));
-            request.setTitle("TVBox 更新");
+            Log.d("UpdateDialog", "最终下载链接: " + finalDownloadUrl);
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(finalDownloadUrl)); // 使用处理后的最终链接
+            request.setTitle("TVBox 更新" + networkStatus); // 在通知标题中显示连接方式
             request.setDescription("正在下载新版本，下载完成后将自动安装");
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
@@ -253,6 +278,60 @@ public class UpdateDialog extends BaseDialog {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "下载失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("UpdateDialog", "下载失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 检查是否能访问Google（用于判断网络环境）
+     * 这个方法会对Google的204响应服务发起一个简单的网络请求
+     * 注意：应在后台线程中调用此方法
+     *
+     * @return 如果能访问Google则返回true，否则返回false
+     */
+    private boolean canAccessGoogle() {
+        HttpURLConnection connection = null;
+
+        try {
+            // 使用Google的204响应服务（轻量级，无实际内容）
+            URL url = new URL("http://www.google.com/generate_204");
+
+            // 设置超时值（单位：毫秒）
+            int timeoutMs = 3000; // 3秒连接超时
+            int responseTimeoutMs = 3000; // 3秒读取超时
+
+            connection = (HttpURLConnection) url.openConnection();
+
+            // 配置连接
+            connection.setRequestMethod("HEAD");
+            connection.setConnectTimeout(timeoutMs);
+            connection.setReadTimeout(responseTimeoutMs);
+            connection.setInstanceFollowRedirects(false);
+            connection.setUseCaches(false);
+
+            // 尝试连接
+            connection.connect();
+
+            // 获取响应码
+            int responseCode = connection.getResponseCode();
+
+            // 204是Google的generate_204服务的标准"无内容"响应
+            // 有时可能会返回200或其他2xx状态码
+            boolean isAccessible = (responseCode == 204 || responseCode >= 200 && responseCode < 300);
+
+//            Log.d("UpdateDialog", "Google可访问性检查: responseCode=" + responseCode + ", accessible=" + isAccessible);
+            return isAccessible;
+
+        } catch (Exception e) {
+            // 任何异常（超时、IO错误等）都意味着无法访问Google
+//            Log.d("UpdateDialog", "Google可访问性检查失败: " + e.getMessage());
+            return false;
+
+        } finally {
+            // 清理资源
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
