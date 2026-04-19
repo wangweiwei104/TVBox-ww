@@ -29,11 +29,13 @@ import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class AboutDialog extends BaseDialog {
@@ -186,7 +188,7 @@ public class AboutDialog extends BaseDialog {
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 String latestVersion = jsonResponse.getString("tag_name");
                 String releaseName = jsonResponse.optString("name", latestVersion);
-                String releaseDate = jsonResponse.optString("published_at", "");
+                String releaseDate = convertUTCToBeijingTime(jsonResponse.optString("published_at", ""));
                 String body = jsonResponse.optString("body", "");
 
                 // 获取下载链接
@@ -214,6 +216,44 @@ public class AboutDialog extends BaseDialog {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 将 UTC 时间字符串转换为北京时间字符串
+     *
+     * @param utcTimeStr UTC 时间字符串，格式必须为 "yyyy-MM-dd'T'HH:mm:ss'Z'"
+     * @return 北京时间字符串，格式为 "yyyy-MM-dd HH:mm:ss"
+     */
+    public static String convertUTCToBeijingTime(String utcTimeStr) {
+        return convertUTCToBeijingTime(utcTimeStr, "yyyy-MM-dd HH:mm:ss");
+    }
+
+    /**
+     * 将 UTC 时间字符串转换为指定格式的北京时间字符串
+     *
+     * @param utcTimeStr UTC 时间字符串，格式必须为 "yyyy-MM-dd'T'HH:mm:ss'Z'"
+     * @param pattern 输出时间的格式模式
+     * @return 指定格式的北京时间字符串，如果转换失败返回空字符串
+     */
+    public static String convertUTCToBeijingTime(String utcTimeStr, String pattern) {
+        try {
+            // 创建 UTC 时区的日期格式化器
+            SimpleDateFormat utcFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+            utcFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            // 解析 UTC 时间
+            Date utcDate = utcFormatter.parse(utcTimeStr);
+
+            // 创建北京时区的日期格式化器
+            SimpleDateFormat beijingFormatter = new SimpleDateFormat(pattern, Locale.getDefault());
+            beijingFormatter.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+
+            // 格式化为北京时间
+            return beijingFormatter.format(utcDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
