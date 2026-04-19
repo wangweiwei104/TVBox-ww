@@ -4,11 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.Intent;
+//import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
-import android.net.Uri;
+//import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -21,9 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
+//import androidx.annotation.Nullable;
+//import androidx.appcompat.app.AlertDialog;
+//import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.github.tvbox.osc.R;
@@ -33,9 +33,15 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
+import tv.danmaku.ijk.media.player.IjkMediaCodecInfo;
 
 public class DecoderInfoDialog extends BaseDialog {
 
@@ -51,6 +57,29 @@ public class DecoderInfoDialog extends BaseDialog {
     private void initView() {
         // 0. 只获取解码器列表
         this.mDecoderInfoList = getDecodersOnly();
+
+        // 新增：对解码器列表进行排序
+        if (mDecoderInfoList != null) {
+            Collections.sort(mDecoderInfoList, new Comparator<DecoderInfo>() {
+                @Override
+                public int compare(DecoderInfo info1, DecoderInfo info2) {
+                    // 1. 视频解码器优先于音频解码器
+                    boolean isVideo1 = "视频".equals(info1.getMediaType());
+                    boolean isVideo2 = "视频".equals(info2.getMediaType());
+                    if (isVideo1 && !isVideo2) {
+                        return -1; // info1(视频) 排在 info2(音频) 前面
+                    } else if (!isVideo1 && isVideo2) {
+                        return 1;  // info2(视频) 排在 info1(音频) 前面
+                    } else if (isVideo1 && isVideo2) {
+                        // 2. 同为视频解码器，按 IJK Rank 降序排列（Rank值大的在前）
+                        return Integer.compare(info2.getRank(), info1.getRank());
+                    } else {
+                        // 3. 同为音频解码器，保持原始顺序或按其他规则排序，这里按名称排序
+                        return info1.getName().compareTo(info2.getName());
+                    }
+                }
+            });
+        }
 
         // 1. 设置统计信息
         TextView countTextView = findViewById(R.id.tv_decoder_count);
@@ -191,6 +220,10 @@ public class DecoderInfoDialog extends BaseDialog {
                 osw.write("   媒体类型: " + info.getMediaType() + "\n");
                 osw.write("   解码方式: " + info.getDecodeTypeString() + "\n");
                 osw.write("   最大码率: " + info.getMaxBitrateString() + "\n");
+                // 新增：写入 IJK Rank
+                if ("视频".equals(info.getMediaType()) && info.getRank() > 0) {
+                    osw.write("   IJK优先级: " + info.getRankString() + "\n");
+                }
                 osw.write("   支持格式: ");
                 String[] types = info.getSupportedTypes();
                 for (int j = 0; j < types.length; j++) {
@@ -271,14 +304,6 @@ public class DecoderInfoDialog extends BaseDialog {
      * @param decoderName 解码器名称
      * @return -1:未知, 0:硬解码, 1:软解码
      */
-
-    /**
-     * 根据解码器名称判断解码类型
-     * 规则：
-     * 0 = 硬解码（必须以 OMX. 或 C2. 开头 + 包含芯片厂商）
-     * 1 = 软解码（ffmpeg / software / google / android 等）
-     * -1 = 未知
-     */
     public static int getDecodeTypeByName(String decoderName) {
         if (decoderName == null || decoderName.trim().isEmpty()) {
             return -1;
@@ -286,47 +311,87 @@ public class DecoderInfoDialog extends BaseDialog {
 
         String lowerName = decoderName.toLowerCase().trim();
 
-        // 芯片厂商关键词（主流硬解厂商）
-        boolean isHardwareVendor = lowerName.contains("qcom")       // 高通
-                || lowerName.contains("hisi")
-                || lowerName.contains("hisilicon")
-                || lowerName.contains("mtk")        // 联发科
-                || lowerName.contains("amlogic")    // 晶晨
-                || lowerName.contains("rockchip")   // 瑞芯微
-                || lowerName.contains("exynos")     // 三星
-                || lowerName.contains("intel")
-                || lowerName.contains("nvidia");
+        // 按点分割字符串
+        String[] parts = lowerName.split("\\.");
 
-        // ======================
-        // 硬解码规则（严格且逻辑）
-        // (以 omx. 开头 或 以 c2. 开头)  并且  是硬件厂商
-        // ======================
-        boolean isHardwareDecoder =
-                (lowerName.startsWith("omx.") || lowerName.startsWith("c2."))
-                        && isHardwareVendor;
+        // 检查是否是硬解码
+        if (parts.length >= 2) {
+            String firstPart = parts[0];
+            String secondPart = parts[1];
 
-        if (isHardwareDecoder) {
-            return 0;
+            // 检查第一部分是否是omx或c2
+            boolean isOmxOrC2 = "omx".equals(firstPart) || "c2".equals(firstPart);
+
+            // 检查第二部分是否是芯片厂商
+            if (isOmxOrC2 && CHIP_VENDORS.contains(secondPart)) {
+                return 0;
+            }
         }
 
-        // ======================
         // 软解码规则
-        // ======================
-        if (lowerName.contains("ffmpeg")
-                || lowerName.contains("libav")
-                || lowerName.contains("software")
-                || lowerName.contains("soft")
-                || lowerName.contains("sw")
-                || lowerName.contains("openh264")
-                || lowerName.contains("x264")
-                || lowerName.contains("google")
-                || lowerName.contains("android")) {
-            return 1;
+        for (String keyword : SOFTWARE_KEYWORDS) {
+            if (lowerName.contains(keyword)) {
+                return 1;
+            }
         }
 
         // 未知
         return -1;
     }
+
+    // 芯片厂商集合
+    private static final Set<String> CHIP_VENDORS = new HashSet<>();
+    static {
+        // MStar 晨星
+        CHIP_VENDORS.add("ms");
+        CHIP_VENDORS.add("mstar");
+
+        // 晶晨
+        CHIP_VENDORS.add("amlogic");
+        CHIP_VENDORS.add("aml");
+
+        // 联发科
+        CHIP_VENDORS.add("mtk");
+        CHIP_VENDORS.add("mediatek");
+
+        // 海思
+        CHIP_VENDORS.add("hi");
+        CHIP_VENDORS.add("hisi");
+        CHIP_VENDORS.add("hisilicon");
+
+        // 瑞芯微
+        CHIP_VENDORS.add("rk");
+        CHIP_VENDORS.add("rockchip");
+
+        // 三星
+        CHIP_VENDORS.add("exynos");
+        CHIP_VENDORS.add("samsung");
+
+        // 高通
+        CHIP_VENDORS.add("qcom");
+        CHIP_VENDORS.add("qualcomm");
+
+        // 全志
+        CHIP_VENDORS.add("allwinner");
+        CHIP_VENDORS.add("sunxi");
+        CHIP_VENDORS.add("aw");
+
+        // 星宸
+        CHIP_VENDORS.add("sigmastar");
+        CHIP_VENDORS.add("ss");
+
+        // 其他芯片厂商
+        CHIP_VENDORS.add("intel");
+        CHIP_VENDORS.add("nvidia");
+        CHIP_VENDORS.add("realtek");
+        CHIP_VENDORS.add("verisilicon");
+    }
+
+    // 软解关键词数组
+    private static final String[] SOFTWARE_KEYWORDS = {
+            "ffmpeg", "libav", "software", "soft", "sw",
+            "openh264", "x264", "google", "android"
+    };
 
     /**
      * 解码器信息类
@@ -342,6 +407,7 @@ public class DecoderInfoDialog extends BaseDialog {
         private String mediaType; // 视频/音频
         private int decodeType; // -1:未知, 0:硬解码, 1:软解码
         private String detailedInfo; // 详细信息
+        private int rank; // 新增：IJK 优先级评分
 
         public DecoderInfo(MediaCodecInfo codecInfo) {
             this.name = codecInfo.getName();
@@ -352,6 +418,9 @@ public class DecoderInfoDialog extends BaseDialog {
 
             // 通过名称判断解码方式
             this.decodeType = getDecodeTypeByName(this.name);
+
+            // 新增：计算 IJK Rank
+            this.rank = calculateIjkRank(codecInfo);
 
             // API 29+ 的方法需要版本检查
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -434,13 +503,49 @@ public class DecoderInfoDialog extends BaseDialog {
         }
 
         /**
+         * 计算当前解码器对于 video/avc 格式的 IJK 优先级评分
+         * 仅对视频解码器且支持 avc 格式时计算，否则返回 -1
+         */
+        private int calculateIjkRank(MediaCodecInfo codecInfo) {
+            // 仅在当前解码器是视频解码器时计算
+            if (!"视频".equals(this.mediaType)) {
+                return -1;
+            }
+
+            // 检查当前解码器是否支持 video/avc
+            boolean supportsAvc = false;
+            for (String type : this.supportedTypes) {
+                if ("video/avc".equalsIgnoreCase(type)) {
+                    supportsAvc = true;
+                    break;
+                }
+            }
+            if (!supportsAvc) {
+                return -1;
+            }
+
+            // 调用 IjkMediaCodecInfo 的静态方法获取 Rank
+            try {
+                IjkMediaCodecInfo ijkInfo =
+                        IjkMediaCodecInfo.setupCandidate(codecInfo, "video/avc");
+                if (ijkInfo != null) {
+                    return ijkInfo.mRank;
+                } else {
+                    return -1; // 获取失败返回-1
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1; // 发生异常时返回-1
+            }
+        }
+
+        /**
          * 生成详细信息
          */
         private String generateDetailedInfo(MediaCodecInfo codecInfo) {
             StringBuilder details = new StringBuilder();
 
             details.append("名称: ").append(name).append("\n");
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 details.append("规范名称: ").append(canonicalName).append("\n");
                 details.append("硬件加速: ").append(isHardwareAccelerated).append("\n");
@@ -451,6 +556,10 @@ public class DecoderInfoDialog extends BaseDialog {
             details.append("媒体类型: ").append(mediaType).append("\n");
             details.append("解码方式: ").append(getDecodeTypeString()).append("\n");
             details.append("最大码率: ").append(getMaxBitrateString()).append("\n");
+            // 新增：添加 IJK Rank 信息只有在rank不为-1时才显示IJK优先级
+            if ("视频".equals(mediaType) && getRank() > 0) {
+                details.append("IJK优先级(Rank): ").append(getRankString()).append("\n");
+            }
 
             // 获取并添加详细能力信息
             try {
@@ -516,6 +625,8 @@ public class DecoderInfoDialog extends BaseDialog {
             }
         }
 
+
+
         public String getName() { return name; }
         public String getCanonicalName() { return canonicalName; }
         public String getMediaType() { return mediaType; }
@@ -536,6 +647,13 @@ public class DecoderInfoDialog extends BaseDialog {
         public int getMaxBitrate() { return maxBitrate; }
         public String[] getSupportedTypes() { return supportedTypes; }
         public String getDetailedInfo() { return detailedInfo; }
+
+        public int getRank() { return rank; }
+
+        public String getRankString() {
+            if (rank < 0) return "";
+            return String.valueOf(rank);
+        }
     }
 
     /**
@@ -570,7 +688,15 @@ public class DecoderInfoDialog extends BaseDialog {
             }
 
             viewHolder.tvDecoderName.setText(decoderInfo.getName());
-            viewHolder.tvMediaType.setText(decoderInfo.getMediaType() + " | " + decoderInfo.getMaxBitrateString());
+//            viewHolder.tvMediaType.setText(decoderInfo.getMediaType() + " | " + decoderInfo.getMaxBitrateString());
+            // 构建媒体类型显示文本
+            String mediaTypeText = decoderInfo.getMediaType() + " | " + decoderInfo.getMaxBitrateString();
+
+            // 如果是视频解码器且rank不为-1，才显示RANK
+            if ("视频".equals(decoderInfo.getMediaType()) && decoderInfo.getRank() > -1) {
+                mediaTypeText += " | RANK " + decoderInfo.getRankString();
+            }
+            viewHolder.tvMediaType.setText(mediaTypeText);
             viewHolder.tvDecodeType.setText(decoderInfo.getDecodeTypeString());
 //            viewHolder.tvMaxBitrate.setText("最大码率: " + decoderInfo.getMaxBitrateString());
 
