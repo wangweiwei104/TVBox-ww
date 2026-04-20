@@ -3,7 +3,11 @@
   <h1 align="center">TV Box</h1>
 </div>
 
-<div align="center">更加注重自定义直播功能的app,完全保留原有点播功能！实际就是为了练手，以前没学过java,会一点点c,python,matlab，第一次用github,还不怎么会</div>
+<div align="center">更加注重自定义直播功能的app,完全保留原有点播功能！针对新设备优化硬解码方式，如果你的新设备无法硬解码，可以试试</div>
+
+> [!Tip]
+> 也是为了练手，以前没学过java,会一点点c,python,matlab，第一次用github,还不怎么会
+
 <br>
 <p align="center">
   <a href="https://github.com/wangweiwei104/TVBox-ww/releases/latest">
@@ -33,7 +37,7 @@
 - [q215613905/TVBoxOS](https://github.com/q215613905/TVBoxOS)
 
 ## 改了啥
-
+- ✅ 修改了播放器对硬解码器识别逻辑，比如小米电视 A55 Pro,GPU是G57,解码器是C2开头的，原版无法识别，能识别G52的解码器
 - ✅ 修改了设置播放器（解码方式）的逻辑。原逻辑为直接从接口中读取，但如果用户自己定义了直播源，依然使用接口中定义的播放器类型，这就不合适了，造成的表象就是设置中更改了播放器类型，直播中也不生效；现修改为如果用户没有自定义直播源，依然从接口中读取；如果用户自定义了直播源（如http://xx/xx.txt），则从设置中读取；
 - ✅ 修改了app图标，使用ChatGPT根据内置banner图生成
 - ✅ 修改了内置的epg_data,原有的TV logo地址已失效（我这里测试无法读取），现已改为与q版TVBOX相同的epg_data，TV logo地址可以使用；在用户未自定义logo地址的情况下使用
@@ -45,6 +49,14 @@
 - ⭐️ 上面四条更新的图以后再补上吧
 - ✨ 代码修改自[takagen99/Box ](https://github.com/takagen99/Box) [20251127-1156](https://github.com/o0HalfLife0o/TVBoxOSC/releases/tag/20251127-1156)
 - ✨ 后面再学习一下怎么合并两个仓库的代码，才能保持实时更新
+
+> [!Tip]
+> Codec 2.0 (C2)：是 Google 从 Android 9/10 开始引入并强制要求的新一代多媒体框架，用于取代旧的 OMX 架构。
+> 命名规范：根据 Android 兼容性定义 (CDD)，所有使用 Codec 2.0 API 的编解码器名称必须以 c2. 开头。
+> 原版的IJK 硬解码器识别规则认定只有omx开头的才是硬解码器，导致新设备无法硬解码。
+> 另外我发现，25年市场上高端电视采用A73+G52的组合（G52是在安卓9上依然是旧架构），
+> 低端电视如A55 pro 的26款改成了5 x A55+G52的组合（25款是 4xA55 + G57）
+> 小红书上的视频 http://xhslink.com/o/2jwVqLTJECy
 
 ## 更新日志
 
