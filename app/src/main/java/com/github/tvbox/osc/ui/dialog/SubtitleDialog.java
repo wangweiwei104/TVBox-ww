@@ -21,8 +21,9 @@ public class SubtitleDialog extends BaseDialog {
     public TextView selectInternal;
     public TextView selectLocal;
     public TextView selectRemote;
-    private TextView subtitleShowOn;
-    private TextView subtitleShowOff;
+    private ImageView subtitleVisibilityMinus;
+    private TextView subtitleVisibilityText;
+    private ImageView subtitleVisibilityPlus;
     private ImageView subtitleSizeMinus;
     private TextView subtitleSizeText;
     private ImageView subtitleSizePlus;
@@ -51,8 +52,9 @@ public class SubtitleDialog extends BaseDialog {
         selectInternal = findViewById(R.id.selectInternal);
         selectLocal = findViewById(R.id.selectLocal);
         selectRemote = findViewById(R.id.selectRemote);
-        subtitleShowOn = findViewById(R.id.subtitleShowOn);
-        subtitleShowOff = findViewById(R.id.subtitleShowOff);
+        subtitleVisibilityMinus = findViewById(R.id.subtitleVisibilityMinus);
+        subtitleVisibilityText = findViewById(R.id.subtitleVisibilityText);
+        subtitleVisibilityPlus = findViewById(R.id.subtitleVisibilityPlus);
         subtitleSizeMinus = findViewById(R.id.subtitleSizeMinus);
         subtitleSizeText = findViewById(R.id.subtitleSizeText);
         subtitleSizePlus = findViewById(R.id.subtitleSizePlus);
@@ -71,8 +73,6 @@ public class SubtitleDialog extends BaseDialog {
         selectInternal.setText(HomeActivity.getRes().getString(R.string.vod_sub_int));
         selectLocal.setText(HomeActivity.getRes().getString(R.string.vod_sub_ext));
         selectRemote.setText(HomeActivity.getRes().getString(R.string.vod_sub_remote));
-        subtitleShowOn.setText(HomeActivity.getRes().getString(R.string.sub_display_on));
-        subtitleShowOff.setText(HomeActivity.getRes().getString(R.string.sub_display_off));
         subtitleSizeText.setText(HomeActivity.getRes().getString(R.string.vod_sub_size));
         subtitleTimeText.setText(HomeActivity.getRes().getString(R.string.vod_sub_delay));
         updateSubtitleVisibilityOptions(SubtitleHelper.isSubtitleVisible());
@@ -105,18 +105,18 @@ public class SubtitleDialog extends BaseDialog {
             }
         });
 
-        subtitleShowOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FastClickCheckUtil.check(view);
-                setSubtitleVisible(true);
-            }
-        });
-        subtitleShowOff.setOnClickListener(new View.OnClickListener() {
+        subtitleVisibilityMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FastClickCheckUtil.check(view);
                 setSubtitleVisible(false);
+            }
+        });
+        subtitleVisibilityPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FastClickCheckUtil.check(view);
+                setSubtitleVisible(true);
             }
         });
 
@@ -234,10 +234,8 @@ public class SubtitleDialog extends BaseDialog {
     }
 
     private void updateSubtitleVisibilityOptions(boolean visible) {
-        subtitleShowOn.setSelected(visible);
-        subtitleShowOn.setAlpha(visible ? 1f : 0.5f);
-        subtitleShowOff.setSelected(!visible);
-        subtitleShowOff.setAlpha(visible ? 0.5f : 1f);
+        int textRes = visible ? R.string.sub_display_on : R.string.sub_display_off;
+        subtitleVisibilityText.setText(HomeActivity.getRes().getString(textRes));
     }
 
     public void setLocalFileChooserListener(LocalFileChooserListener localFileChooserListener) {
