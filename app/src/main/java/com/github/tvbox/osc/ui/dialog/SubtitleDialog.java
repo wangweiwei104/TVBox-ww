@@ -109,14 +109,14 @@ public class SubtitleDialog extends BaseDialog {
             @Override
             public void onClick(View view) {
                 FastClickCheckUtil.check(view);
-                setSubtitleVisible(false);
+                setSubtitleVisible(!SubtitleHelper.isSubtitleVisible());
             }
         });
         subtitleVisibilityPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FastClickCheckUtil.check(view);
-                setSubtitleVisible(true);
+                setSubtitleVisible(!SubtitleHelper.isSubtitleVisible());
             }
         });
 
