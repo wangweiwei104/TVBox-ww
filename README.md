@@ -58,6 +58,35 @@
 > 低端电视如A55 pro 的26款改成了5 x A55+G52的组合（25款是 4xA55 + G57）
 > 小红书上的视频 http://xhslink.com/o/2jwVqLTJECy
 
+## 使用 VS Code 开发
+
+本项目使用 Gradle Wrapper 构建，不需要单独安装 Gradle。当前构建配置使用 Android Gradle Plugin 7.4.2 和 Gradle 7.5，建议使用 **JDK 11**。
+
+### 安装开发环境
+
+1. 安装 VS Code，并在扩展面板安装工作区推荐的扩展（打开本项目后会显示推荐提示）：Java Extension Pack、Gradle for Java、Kotlin Language 和 Android。
+2. 在 VS Code 命令面板运行 `Java: Install New JDK`，选择并安装 JDK 11。安装后重启 VS Code，并确认 `JAVA_HOME` 指向 JDK 11，且 `%JAVA_HOME%\bin` 在 `PATH` 中。
+3. 安装 Android SDK。可通过 Android Studio 的 SDK Manager 安装 Android SDK Platform 34 和 Android SDK Platform-Tools（ADB）；设置 `ANDROID_HOME` 指向 SDK 目录。也可在 Android Studio 中打开本项目一次，让它安装所需的 Android SDK 组件。
+4. 项目包含 Chaquopy Python 模块。安装 Python 3.8，并确保 `python` 命令可用。若 Python 不在 `PATH` 中，可通过环境变量 `CHAQUOPY_BUILD_PYTHON` 指定 `python.exe` 的完整路径；也可在 Gradle 命令中用 `-PchaquopyBuildPython="C:\路径\python.exe"` 指定。
+5. 在 VS Code 中打开仓库根目录，并在弹出的提示中选择安装推荐扩展。
+
+### 构建和安装
+
+- 按 `Ctrl+Shift+B` 执行默认任务 `Android: assembleDebug`，构建所有 Debug 变体。
+- 在命令面板运行 `Tasks: Run Task`，可选择 `Android: assembleRelease` 或 `Gradle: clean`。
+- 连接已开启 USB 调试的 Android 设备后，运行 `Android: install arm64 debug`，构建并安装 arm64、generic、normal 的 Debug 版本。
+- APK 输出在 `app\build\outputs\apk\` 下。
+
+也可以在 VS Code 终端中直接执行：
+
+```powershell
+.\gradlew.bat assembleDebug
+.\gradlew.bat assembleRelease
+.\gradlew.bat installArm64GenericNormalDebug
+```
+
+如提示找不到 Android SDK，请确认 `ANDROID_HOME` 设置正确；如提示找不到 Python，请将 Python 3.8 加入 `PATH`，或设置 `CHAQUOPY_BUILD_PYTHON`。
+
 ## 更新日志
 
 [更新日志](./CHANGELOG.md)
@@ -79,4 +108,3 @@
 ## 许可证
 
 [MIT](./LICENSE) License &copy; 2025-PRESENT [wangweiwei104](https://github.com/wangweiwei104)
-

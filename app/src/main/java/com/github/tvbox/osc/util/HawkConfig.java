@@ -57,6 +57,7 @@ public class HawkConfig {
     public static final String SEARCH_VIEW = "search_view";     // 0 列表 1 缩略图
     public static final String SOURCES_FOR_SEARCH = "checked_sources_for_search";
     public static final String STORAGE_DRIVE_SORT = "storage_drive_sort";
+    public static final String SUBTITLE_VISIBLE = "subtitle_visible";
     public static final String SUBTITLE_TEXT_SIZE = "subtitle_text_size";
     public static final String SUBTITLE_TEXT_STYLE = "subtitle_text_style";
     public static final String SUBTITLE_TIME_DELAY = "subtitle_time_delay";

@@ -3,6 +3,10 @@ plugins {
     id 'com.chaquo.python'
 }
 
+def chaquopyBuildPython = providers.gradleProperty("chaquopyBuildPython")
+        .orElse(providers.environmentVariable("CHAQUOPY_BUILD_PYTHON"))
+        .getOrElse("python")
+
 android {
     compileSdk 34
 
@@ -11,7 +15,7 @@ android {
         targetSdkVersion 33
 
         python {
-            buildPython("D:/Programs/Python/Python38/python.exe")
+            buildPython(chaquopyBuildPython)
             pip {
                 install "lxml"
                 install "ujson"

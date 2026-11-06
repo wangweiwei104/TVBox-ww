@@ -46,6 +46,14 @@ public class SubtitleHelper {
         Hawk.put(HawkConfig.SUBTITLE_TEXT_SIZE, size);
     }
 
+    public static boolean isSubtitleVisible() {
+        return Hawk.get(HawkConfig.SUBTITLE_VISIBLE, true);
+    }
+
+    public static void setSubtitleVisible(boolean visible) {
+        Hawk.put(HawkConfig.SUBTITLE_VISIBLE, visible);
+    }
+
     public static int getTimeDelay() {
         int subtitleConfigTimeDelay = Hawk.get(HawkConfig.SUBTITLE_TIME_DELAY, 0);
         return subtitleConfigTimeDelay;

@@ -166,6 +166,9 @@
     <string name="vod_sub_search">Search</string>
     <string name="vod_sub_off">Subtitle Off</string>
     <string name="vod_sub_on">Subtitle On</string>
+    <string name="sub_display">Display</string>
+    <string name="sub_display_on">On</string>
+    <string name="sub_display_off">Off</string>
     <string name="vod_remaining_time">Remaining Time</string>
     <string name="vod_ends_at">Ends at</string>
 

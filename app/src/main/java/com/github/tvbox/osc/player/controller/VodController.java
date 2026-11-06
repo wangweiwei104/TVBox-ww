@@ -799,18 +799,12 @@ public class VodController extends BaseController {
         mSubtitleBtn.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (mSubtitleView.getVisibility() == View.GONE) {
-                    mSubtitleView.setVisibility(VISIBLE);
-                    hideBottom();
-                    Toast.makeText(getContext(), HomeActivity.getRes().getString(R.string.vod_sub_on), Toast.LENGTH_SHORT).show();
-                } else {
-                    mSubtitleView.setVisibility(View.GONE);
-                    // mSubtitleView.destroy();
-                    // mSubtitleView.clearSubtitleCache();
-                    // mSubtitleView.isInternal = false;
-                    hideBottom();
-                    Toast.makeText(getContext(), HomeActivity.getRes().getString(R.string.vod_sub_off), Toast.LENGTH_SHORT).show();
-                }
+                boolean visible = !SubtitleHelper.isSubtitleVisible();
+                SubtitleHelper.setSubtitleVisible(visible);
+                mSubtitleView.setVisibility(visible ? VISIBLE : View.GONE);
+                hideBottom();
+                int message = visible ? R.string.vod_sub_on : R.string.vod_sub_off;
+                Toast.makeText(getContext(), HomeActivity.getRes().getString(message), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

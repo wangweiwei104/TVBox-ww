@@ -366,7 +366,8 @@ public class PlayFragment extends BaseLazyFragment {
             // 设置字幕
             mController.mSubtitleView.setVisibility(View.GONE);
             mController.mSubtitleView.setSubtitlePath(path);
-            mController.mSubtitleView.setVisibility(View.VISIBLE);
+            mController.mSubtitleView.setVisibility(
+                    SubtitleHelper.isSubtitleVisible() ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -377,13 +378,24 @@ public class PlayFragment extends BaseLazyFragment {
         	@Override
             public void setTextSize(int size) {
                 mController.mSubtitleView.setTextSize(size);
-            }@Override
+            }
+
+            @Override
+            public void setSubtitleVisible(boolean visible) {
+                mController.mSubtitleView.setVisibility(visible ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
             public void setSubtitleDelay(int milliseconds) {
                 mController.mSubtitleView.setSubtitleDelay(milliseconds);
-            }@Override
+            }
+
+            @Override
             public void selectInternalSubtitle() {
                 selectMyInternalSubtitle();
-            }@Override
+            }
+
+            @Override
             public void setTextStyle(int style) {
                 setSubtitleViewTextStyle(style);
             }
@@ -474,7 +486,8 @@ public class PlayFragment extends BaseLazyFragment {
         dialog.setAdapter(null, new SelectDialogAdapter.SelectDialogInterface<TrackInfoBean>() {
             @Override
             public void click(TrackInfoBean value, int pos) {
-                mController.mSubtitleView.setVisibility(View.VISIBLE);
+                mController.mSubtitleView.setVisibility(
+                        SubtitleHelper.isSubtitleVisible() ? View.VISIBLE : View.GONE);
                 try {
                     for (TrackInfoBean subtitle : bean) {
                         subtitle.selected = subtitle.trackId == value.trackId;
@@ -866,6 +879,8 @@ public class PlayFragment extends BaseLazyFragment {
     }
 
     private void initSubtitleView() {
+        mController.mSubtitleView.setVisibility(
+                SubtitleHelper.isSubtitleVisible() ? View.VISIBLE : View.GONE);
     	AbstractPlayer mediaPlayer = mVideoView.getMediaPlayer();
         TrackInfo trackInfo = null;
         if (mVideoView.getMediaPlayer() instanceof IjkmPlayer) {
